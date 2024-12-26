@@ -57,7 +57,6 @@
                         <label for="cv" class="form-label">Curriculum Vitae (CV)</label>
                         <input type="file" class="form-control" name="cv" id="cv">
                     </div>
-                    
                 </div>
                 <hr>
                 <div class="row">

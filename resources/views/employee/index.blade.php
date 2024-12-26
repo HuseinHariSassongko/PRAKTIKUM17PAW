@@ -1,68 +1,95 @@
 @extends('layouts.app')
+@push('scripts')
+    <script type="module">
+        $(document).ready(function() {
+            $("#employeeTable").DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: "/getEmployees",
+                columns: [
+                    { data: "id", name: "id", visible: false },
+                    { data: "DT_RowIndex", name: "DT_RowIndex", orderable: false,
+searchable: false },
+                    { data: "firstname", name: "firstname" },
+                    { data: "lastname", name: "lastname" },
+                    { data: "email", name: "email" },
+                    { data: "age", name: "age" },
+                    { data: "position.name", name: "position.name" },
+                    { data: "actions", name: "actions", orderable: false,
+searchable: false },
+                ],
+                order: [[0, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"],
+                ],
+            });
+              $(".datatable").on("click", ".btn-delete", function (e) {
+                e.preventDefault();
 
+                var form = $(this).closest("form");
+                var name = $(this).data("name");
+
+                Swal.fire({
+                    title: "Are you sure want to delete\n" + name + "?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "bg-primary",
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+});
+});
+        });
+    </script>
+@endpush
 @section('content')
 <div class="container mt-4">
+    <div class="row mb-0">
+        <div class="col-lg-9 col-xl-6">
+            <h4 class="mb-3">{{ $pageTitle }}</h4>
+        </div>
+        <div class="col-lg-3 col-xl-6">
+            <ul class="list-inline mb-0 float-end">
+                <li class="list-inline-item">
+                    <a href="{{ route('employees.exportExcel') }}" class="btn btn-outline-success me-2">
+                        <i class="bi bi-download me-1"></i> to Excel
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ route('employees.exportPdf') }}" class="btn btn-outline-danger me-2">
+                        <i class="bi bi-file-earmark-pdf me-1"></i> to PDF
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ route('employees.create') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i> Create Employee
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3>Employee List</h3>
-                <a href="{{ route('employees.create') }}" class="btn btn-primary">
-                    Create Employee
-                </a>
-            </div>
-
             <div class="card">
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
+                        <table class="table table-bordered table-hover table-striped mb-0 bg-white" id="employeeTable">
+                            <thead>
                                 <tr>
+                                    <th>ID</th>
+                                    <th>No.</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Email</th>
                                     <th>Age</th>
                                     <th>Position</th>
-                                    <th width="15%"></th>
+                                    <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @if($employees->isEmpty())
-                                    <tr>
-                                        <td colspan="6" class="text-center">No employees found.</td>
-                                    </tr>
-                                @else
-                                    @foreach ($employees as $employee)
-                                        <tr>
-                                            <td>{{ $employee->firstname }}</td>
-                                            <td>{{ $employee->lastname }}</td>
-                                            <td>{{ $employee->email }}</td>
-                                            <td>{{ $employee->age }}</td>
-                                            <td>{{ $employee->position->name }}</td>
-                                            <td>
-                                                <div class="d-flex gap-2 justify-content-center">
-                                                    <a href="{{ route('employees.show', $employee->id) }}"
-                                                        class="btn btn-light btn-sm border">
-                                                        <i class="bi bi-person-lines-fill"></i>
-                                                    </a>
-                                                    <a href="{{ route('employees.edit', $employee->id) }}"
-                                                        class="btn btn-light btn-sm border">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <form action="{{ route('employees.destroy', $employee->id) }}"
-                                                        method="POST"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button type="submit" class="btn btn-light btn-sm border">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -11,19 +11,19 @@ class PositionSeeder extends Seeder
     {
         Position::factory()->count(5)->create();
 
-        //Position::create([
-        //  'name' => 'Front End Developer',
-        //   'code' => 'FE'
-        //]);
-        //
-        //Position::create([
-        //   'name' => 'Back End Developer',
-        //    'code' => 'BE'
-        //]);
-        //
-        //Position::create([
-        //   'name' => 'System Analist',
-        //   'code' => 'SA'
-        //]);
+        Position::create([
+          'name' => 'Front End Developer',
+           'code' => 'FE'
+        ]);
+
+        Position::create([
+           'name' => 'Back End Developer',
+            'code' => 'BE'
+        ]);
+
+        Position::create([
+           'name' => 'System Analist',
+           'code' => 'SA'
+        ]);
     }
 }

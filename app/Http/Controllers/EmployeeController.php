@@ -11,7 +11,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\Factory;
 use Illuminate\View\View;
 use App\Models\Position;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployeesExport;
+use Dompdf\Exception;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use Maatwebsite\Excel\ExcelServiceProvider;
+use Maatwebsite\Excel\Parsers\ExcelParser;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class EmployeeController extends Controller
 {
@@ -23,7 +32,7 @@ class EmployeeController extends Controller
         $pageTitle = 'Employee List';
         // Ambil semua data employee beserta relasi position
         $employees = Employee::with('position')->get();
-
+        confirmDelete();
         return view('employee.index', [
             'pageTitle' => $pageTitle,
             'employees' => $employees
@@ -98,6 +107,7 @@ public function store(Request $request)
         }
 
         $employee->save();
+        Alert::success('Added Successfully', 'Employee Data Added Successfully.');
 
         return redirect()->route('employees.index');
     }
@@ -160,7 +170,7 @@ public function store(Request $request)
         $employee->age = $request->age;
         $employee->position_id = $request->position;
         $employee->save();
-
+        Alert::success('Changed Successfully', 'Employee Data Changed Successfully.');
         return redirect()->route('employees.index');
     }
 
@@ -170,8 +180,9 @@ public function store(Request $request)
     public function destroy(string $id)
     {
     // ELOQUENT
-    Employee::find($id)->delete();
 
+    Employee::find($id)->delete();
+    Alert::success('Deleted Successfully', 'Employee Data Deleted Successfully.');
     return redirect()->route('employees.index');
     }
 
@@ -184,5 +195,29 @@ public function store(Request $request)
         if(Storage::exists($encryptedFilename)) {
             return Storage::download($encryptedFilename, $downloadFilename);
         }
+    }
+    
+    public function getData(Request $request)
+    {
+    $employees = Employee::with('position');
+
+    if ($request->ajax()) {
+        return datatables()->of($employees) ->addIndexColumn() ->addColumn('actions', function($employee) {
+                return view('employee.actions', compact('employee'));
+            })
+            ->toJson();
+        }
+    }
+
+    public function exportExcel()
+{
+    return Excel::download(new EmployeesExport, 'employees.xlsx');
+}
+
+    public function exportPdf()
+    {
+    $employees = Employee::all();
+    $pdf = FacadePdf::loadView('employee.export_pdf', compact('employees'));
+    return $pdf->download('employees.pdf');
     }
 }
