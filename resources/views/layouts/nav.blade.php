@@ -18,9 +18,19 @@
                 <li class="nav-item col-2 col-md-auto"><a href="{{ route('employees.index') }}" class="nav-link @if($currentRouteName == 'employees.index') active @endif">Employee</a></li>
             </ul>
 
-            <hr class="d-md-none text-white-50">
-
-            <a href="{{ route('profile') }}" class="btn btn-outline-light my-2 ms-md-auto"><i class="bi-person-circle me-1"></i> My Profile</a>
+            {{-- Tambahan fitur administrator --}}
+            <div class="ms-auto">
+                <div class="dropdown">
+                    <a href="#" class="btn btn-outline-light dropdown-toggle" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Administrator
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" href="{{ route('profile') }}">My Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            {{-- Akhir tambahan fitur administrator --}}
         </div>
     </div>
 </nav>

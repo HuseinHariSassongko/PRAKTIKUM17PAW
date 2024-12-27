@@ -25,6 +25,10 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
 
+Route::get('/logout', function () {
+    return view('welcome'); // Ganti 'welcome' dengan nama file blade Anda jika berbeda
+})->name('your.logout.route');
+
 Route::post('/logout', function () {
     // Logika logout
     return redirect('/login');
