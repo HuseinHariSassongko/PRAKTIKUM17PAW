@@ -30,12 +30,13 @@ class EmployeeController extends Controller
     public function index()
     {
         $pageTitle = 'Employee List';
+        confirmDelete();
         // Ambil semua data employee beserta relasi position
         $employees = Employee::with('position')->get();
-        confirmDelete();
+        $positions = Position::all();
         return view('employee.index', [
             'pageTitle' => $pageTitle,
-            'employees' => $employees
+            'positions' => $positions
         ]);
     }
 
@@ -196,7 +197,7 @@ public function store(Request $request)
             return Storage::download($encryptedFilename, $downloadFilename);
         }
     }
-    
+
     public function getData(Request $request)
     {
     $employees = Employee::with('position');

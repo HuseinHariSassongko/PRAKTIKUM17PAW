@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,14 @@ Route::get('/profile', function () {
 })->name('profile');
 
 Route::get('/logout', function () {
-    return view('welcome'); // Ganti 'welcome' dengan nama file blade Anda jika berbeda
-})->name('your.logout.route');
+    return view('welcome');
+})->name('logout');
 
 Route::post('/logout', function () {
     // Logika logout
     return redirect('/login');
 })->name('logout');
+
 
 Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('profile', ProfileController::class)->name('profile');

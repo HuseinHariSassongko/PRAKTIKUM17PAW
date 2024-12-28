@@ -25,8 +25,12 @@
                         Administrator
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile') }}">My Profile</a></li>
-                        <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile') }}" style="color: black;">My Profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('logout') }}" style="color: red;">Logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
