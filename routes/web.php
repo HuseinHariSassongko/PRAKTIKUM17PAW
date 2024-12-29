@@ -40,7 +40,7 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 Route::get('profile', ProfileController::class)->name('profile');
 Route::resource('employees', EmployeeController::class);
 Route::get('getEmployees', [EmployeeController::class, 'getData'])->name('employees.getData');
-Route::get('/employees/export-excel', [EmployeeController::class, 'exportExcel'])->name('employees.exportExcel');
+Route::get('exportExcel', [EmployeeController::class, 'exportExcel'])->name('employees.exportExcel');
 Route::get('exportPdf', [EmployeeController::class, 'exportPdf'])->name('employees.exportPdf');
 
 Route::get('/local-disk', function() {

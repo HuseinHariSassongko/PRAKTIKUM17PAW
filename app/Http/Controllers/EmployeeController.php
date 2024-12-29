@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\EmployeesExport;
 use Dompdf\Exception;
-use Maatwebsite\Excel\Excel as ExcelExcel;
-use Maatwebsite\Excel\ExcelServiceProvider;
-use Maatwebsite\Excel\Parsers\ExcelParser;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class EmployeeController extends Controller
@@ -211,9 +208,10 @@ public function store(Request $request)
     }
 
     public function exportExcel()
-{
-    return Excel::download(new EmployeesExport, 'employees.xlsx');
-}
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
+    }
+
 
     public function exportPdf()
     {
